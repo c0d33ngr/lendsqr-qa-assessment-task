@@ -13,7 +13,7 @@ This repository contains automated test scripts developed for Task 2 of the Lend
 
 ### Step 3:
 
-**Import Postman Collection**: Import the Postman collection file ```lendsqr api.postman_collection.json``` located in this repository into your Postman application.
+**Import Postman Collection**: Import the Postman collection file ```Lendsqr QA Engineer Assessment - Task 2- Automated API Test Scripts.postman_collection.json``` located in this repository into your Postman application.
 
 ## Setup Instructions (for Postman Web)
 **Access the Postman repo link**: Click [here](https://www.postman.com/c0d33ngr/workspace/lendsqr-qa-task/collection/36489031-cce21292-3bfe-42fd-8721-20f421ec61df?action=share&creator=36489031) to access the repo link from Postman web. Then you can continue with configuring collection variables.
