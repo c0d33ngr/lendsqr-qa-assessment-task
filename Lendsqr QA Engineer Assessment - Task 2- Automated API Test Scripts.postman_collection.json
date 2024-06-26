@@ -1,0 +1,865 @@
+{
+	"info": {
+		"_postman_id": "cce21292-3bfe-42fd-8721-20f421ec61df",
+		"name": "Lendsqr QA Engineer Assessment - Task 2: Automated API Test Scripts",
+		"description": "# 🚀 Description\n\nThis repository contains automated test scripts developed for Task 2 of the Lendsqr QA Engineer Assessment. These scripts utilize Postman to automate the execution of API test cases documented in Task 1. The scripts cover functionalities related to Signup, Login, and Retrieving API Keys, excluding the Oraculi Mobile SDK (Beta) module.\n\n## 🔖 Setup Instructions(for Postman Desktop)\n\n#### **Step 1:**\n\n**Install Postman:** Download and install the latest version of Postman from [https://www.postman.com/downloads/](https://www.postman.com/downloads/).\n\n#### **Step 2:**\n\n**Clone this Repository:** Clone this repository to your local machine using Git.\n\n#### **Step 3:**\n\n**Import Postman Collection:** Import the Postman collection file (`[lendsqr api.postman_collection.json]`) located in this repository into your Postman application.\n\n## 🔖 Setup Instructions(for Postman Web)\n\n**Access the Postman repo link**: Click [here](https://www.postman.com/c0d33ngr/workspace/lendsqr-qa-task/collection/36489031-cce21292-3bfe-42fd-8721-20f421ec61df?action=share&creator=36489031) to access the repo link from Postman web. Then you can continue with configuring collection variables.\n\nNote: You'll need to have a Postman account with them to continue.\n\n## Configure Collection Variables\n\nThe Postman collection utilizes collection variables to store certain values. These variables need to be replaced with your actual API environment details before running the tests.\n\n- Open the imported Postman collection `lendsqr api.postman_collection.json]`.\n    \n- Navigate to the **\"Variables\"** tab.\n    \n- Locate the defined collection variables\n    \n    - `apiKey` This is the app API key\n        \n    - `name` This is the full name of the account\n        \n    - `token` This is the OTP sent to real phone number or email address\n        \n    - `AuthToken` This is authorization header value gotten from web browser tool\n        \n    - `phone_number` This is real phone number\n        \n    - `rc_number` This is the Registered Company number assigned to companies by Corporate Affair Commission (CAC)\n        \n    - `business_name` This is the business name\n        \n    - `app_id` This is the app ID which it's API key is to be retrieved\n        \n- Update the value field for each variable with actual values.\n    \n    - For example, fill `apiKey` with the actual Lendsqr Adjutor App API Key.\n        \n\n## Running the Tests\n\nOnce you've imported your collection and configured collection variables, you can navigate to the collection in Postman. The collection contains individual test scripts for various functionalities.\n\n- You can execute each test script individually by selecting the desired script within the collection and clicking the \"Send\" button.\n    \n- Alternatively, Postman offers Runner features (desktop app) or Runner collections (web app) to run multiple tests in sequence. However, for cases requiring manual input or OTP verification, individual execution is recommended.\n    \n\n**Important Note: OTP**\n\nPlease be aware that some test scripts might require user intervention during execution. This is because certain functionalities, like login with OTP requiring specific data input, might not be fully automatable within the scripts themselves.\n\n- When encountering a test script requiring an OTP, you'll need to provide the actual OTP received through email or SMS during test execution.\n    \n\n**Running these tests individually allows you to provide the necessary input during execution.**\n\n**Additional Notes**\n\n- This repository serves as a demonstration of automated API test scripts for the Lendsqr QA Engineer Assessment.\n    \n- Feel free to explore and adapt these scripts for further testing purposes.\n    \n\n**License**\n\nMIT License",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36489031",
+		"_collection_link": "https://www.postman.com/c0d33ngr/workspace/lendsqr-qa-task/collection/36489031-cce21292-3bfe-42fd-8721-20f421ec61df?action=share&source=collection_link&creator=36489031"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"item": [
+				{
+					"name": "Signup Positive Case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Signup - Positive Case\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody({",
+									"        status: \"success\",",
+									"        code: null,",
+									"        message: \"Successful\",",
+									"        session_id: \"\",",
+									"        data: null",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{apiKey}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{name}}\",\n    \"password\":\"{{password}}\",\n    \"email\":\"{{email}}\",\n    \"phone_number\":\"{{phone_number}}\",\n    \"locale\":\"{{locale}}\",\n    \"business_name\":\"{{business_name}}\",\n    \"rc_number\":\"{{rc_number}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/onboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"onboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup Negative Case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Signup - Negative Case (Invalid Email)\", function () {",
+									"  pm.response.to.have.status(400); // Expect bad request status code (common for invalid data)",
+									"  pm.response.to.be.json;",
+									"  pm.response.to.have.jsonBody({",
+									"    status:  \"error\", // Expect error status in response",
+									"    message: \"Unable to verify email\", // Expect unable to verify email",
+									"    session_id: \"\",",
+									"    data: null,",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{apiKey}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{name}}\",\n    \"password\":\"{{password}}\",\n    \"email\":\"{{email}}\",\n    \"phone_number\":\"{{phone_number}}\",\n    \"locale\":\"{{locale}}\",\n    \"business_name\":\"{{business_name}}\",\n    \"rc_number\":\"{{rc_number}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/onboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"onboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup Edge Case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Signup - Edge Case (Invalid Email)\", function () {",
+									"  pm.response.to.have.status(400); // Expect bad request status code (common for invalid data)",
+									"  pm.response.to.be.json;",
+									"  pm.response.to.have.jsonBody({",
+									"    status:  \"success\", // Expect error status in response",
+									"    message: \"Successful\", // Expect unable to verify email",
+									"    session_id: \"\",",
+									"    data: null,",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{apiKey}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Host",
+								"value": "{{Host}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Origin",
+								"value": "{{Origin}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Referer",
+								"value": "{{Referer}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Source",
+								"value": "{{Source}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{name}}\",\n    \"password\":\"{{password}}\",\n    \"email\":\"{{email}}\",\n    \"phone_number\":\"{{phone_number}}\",\n    \"locale\":\"{{locale}}\",\n    \"business_name\":\"{{business_name}}\",\n    \"rc_number\":\"{{rc_number}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v2/onboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"onboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Positive Case",
+					"item": [
+						{
+							"name": "Login Positive Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let loginKey = pm.response.json().data.loginKey; // Get the loginKey from response",
+											"pm.collectionVariables.set(\"loginKey\", loginKey); // Set the loginKey as variable to use outside this request",
+											"",
+											"pm.test(\"Login - Positive Case (2FA Required)\", function () {",
+											"  pm.response.to.have.status(200); // Expect success status code",
+											"  pm.response.to.be.json;",
+											"  pm.response.to.have.jsonBody({",
+											"    status: \"success\", // Expect success status in response",
+											"    message: \"Enter 2FA token to Authenticate\", // Expect specific message",
+											"    data: {",
+											"      is_twofa_enabled: true, // Expect 2FA to be enabled",
+											"    },",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{apiKey}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "{{Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "{{Origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Referer",
+										"value": "{{Referer}}",
+										"type": "text"
+									},
+									{
+										"key": "Source",
+										"value": "{{Source}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/admin/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with OTP Positive Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login - Successful Response\", function () {",
+											"  pm.response.to.have.status(200); // Expect success status code",
+											"  pm.response.to.be.json;",
+											"  pm.response.to.have.jsonBody({",
+											"    status: \"success\", // Expect success status in response",
+											"    message: \"successful\", // Expect successful message",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let token = pm.collectionVariables.get('token');",
+											"",
+											"if (!token) {",
+											"    // If the token is not set, stop the collection run",
+											"    throw new Error('Token is not set. Please set the token in the collection variable.');",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{apiKey}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\":\"{{token}}\",\n    \"loginKey\":\"{{loginKey}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/admin/login/2fa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"admin",
+										"login",
+										"2fa"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Case",
+					"item": [
+						{
+							"name": "Login Negative Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login - Negative Case (Unexpected Error)\", function () {",
+											"  pm.response.to.have.status(400); // Expect server error status code (common for unexpected errors)",
+											"  pm.response.to.be.json;",
+											"  pm.response.to.have.jsonBody({",
+											"    status: \"error\", // Expect error status in response",
+											"    message: \"Incorrect login credentials.\", // incorrect login credentials",
+											"    session_id: \"\",",
+											"    data: null,",
+											"  });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "{{Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "{{Origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Referer",
+										"value": "{{Referer}}",
+										"type": "text"
+									},
+									{
+										"key": "Source",
+										"value": "{{Source}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/admin/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Positive Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let loginKey = pm.response.json().data.loginKey; // Get the loginKey from response",
+											"pm.collectionVariables.set(\"loginKey\", loginKey); // Set the loginKey as variable to use outside this request",
+											"",
+											"pm.test(\"Login - Positive Case (2FA Required)\", function () {",
+											"  pm.response.to.have.status(200); // Expect success status code",
+											"  pm.response.to.be.json;",
+											"  pm.response.to.have.jsonBody({",
+											"    status: \"success\", // Expect success status in response",
+											"    message: \"Enter 2FA token to Authenticate\", // Expect specific message",
+											"    data: {",
+											"      is_twofa_enabled: true, // Expect 2FA to be enabled",
+											"    },",
+											"  });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{apiKey}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "{{Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "{{Origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Referer",
+										"value": "{{Referer}}",
+										"type": "text"
+									},
+									{
+										"key": "Source",
+										"value": "{{Source}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/admin/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with OTP Negative Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login with OTP - Negative Response\", function () {",
+											"  pm.response.to.have.status(500); // Expect success status code",
+											"  pm.response.to.be.json;",
+											"  pm.response.to.have.jsonBody({",
+											"    status: \"error\",",
+											"    message: \"An error occurred, please contact support\",",
+											"    session_id: \"\",",
+											"    data: null",
+											"  });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{apiKey}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "{{Host}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "{{Origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Referer",
+										"value": "{{Referer}}",
+										"type": "text"
+									},
+									{
+										"key": "Source",
+										"value": "{{Source}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\":\"{{token}}\",\n    \"loginKey\":\"{{loginKey}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/auth/admin/login/2fa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"admin",
+										"login",
+										"2fa"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "RetrieveAPIKey",
+			"item": [
+				{
+					"name": "RetrieveAPIKey Positive Case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieve APIKey - Positive Case\", function () {",
+									"  pm.response.to.have.status(200); // Expect server status code 200 OK",
+									"  pm.response.to.be.json;",
+									"  pm.response.to.have.jsonBody({",
+									"    status: \"success\",",
+									"    message: \"success\",",
+									"  });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/adjutor/token?app_id={{appID}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"adjutor",
+								"token"
+							],
+							"query": [
+								{
+									"key": "app_id",
+									"value": "{{appID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetrieveAPIKey Negative Case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieve APIKey - Negative Case (Unexpected Error)\", function () {",
+									"  pm.response.to.have.status(401); // Expect server error status code",
+									"  pm.response.to.be.json;",
+									"  pm.response.to.have.jsonBody({",
+									"    status: \"error\", // Expect error status in response",
+									"    message: \"Unauthorized access\", // incorrect login credentials",
+									"    session_id: \"\",",
+									"    data: null,",
+									"  });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer iei gl dp fh ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/adjutor/token?app_id={{appID}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"adjutor",
+								"token"
+							],
+							"query": [
+								{
+									"key": "app_id",
+									"value": "{{appID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Source",
+			"value": "YWRqdXRvcg=="
+		},
+		{
+			"key": "Referer",
+			"value": "https://app.adjutor.io/"
+		},
+		{
+			"key": "Origin",
+			"value": "app.adjutor.io"
+		},
+		{
+			"key": "Host",
+			"value": "vigil.lendsqr.com"
+		},
+		{
+			"key": "apiKey",
+			"value": "Put App API Key here"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://vigil.lendsqr.com/pecunia"
+		},
+		{
+			"key": "email",
+			"value": "Put email address here",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "Put passoword here",
+			"type": "string"
+		},
+		{
+			"key": "name",
+			"value": "Put full name here",
+			"type": "string"
+		},
+		{
+			"key": "phone_number",
+			"value": "Put phone number here",
+			"type": "string"
+		},
+		{
+			"key": "rc_number",
+			"value": "Put rc number here",
+			"type": "string"
+		},
+		{
+			"key": "business_name",
+			"value": "Put business name here",
+			"type": "string"
+		},
+		{
+			"key": "locale",
+			"value": "en-US",
+			"type": "string"
+		},
+		{
+			"key": "loginKey",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": "Put OTP here for 2FA",
+			"type": "string"
+		},
+		{
+			"key": "AuthToken",
+			"value": "Put token here",
+			"type": "string"
+		},
+		{
+			"key": "appID",
+			"value": "Put app ID here",
+			"type": "string"
+		}
+	]
+}
