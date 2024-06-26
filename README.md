@@ -24,7 +24,7 @@ Note: You'll need to have a Postman account with them to continue.
 
 The Postman collection utilizes collection variables to store certain values. These variables need to be replaced with your actual API environment details before running the tests.
 
-* Open the imported Postman collection ```lendsqr api.postman_collection.json]```.
+* After you have imported the collection file ```Lendsqr QA Engineer Assessment - Task 2- Automated API Test Scripts.postman_collection.json```.
 * Navigate to the **"Variables"** tab.
 * Locate the defined collection variables
     * `apiKey` This is the app API key
