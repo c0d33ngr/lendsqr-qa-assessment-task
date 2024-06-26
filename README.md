@@ -34,6 +34,7 @@ The Postman collection utilizes collection variables to store certain values. Th
     * `phone_number` This is real phone number
     * `rc_number` This is the Registered Company number assigned to companies by Corporate Affair Commission (CAC)
     * `business_name` This is the business name
+    * `appID` This is the app ID which it's API key is to be retrieved
 * Update the value field for each variable with actual values.
   * For example, fill `apiKey` with the actual Lendsqr Adjutor App API Key.
 
