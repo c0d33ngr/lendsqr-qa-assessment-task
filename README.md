@@ -44,6 +44,7 @@ The Postman collection utilizes collection variables to store certain values. Th
 Once you've imported your collection and configured collection variables, you can navigate to the collection in Postman. The collection contains individual test scripts for various functionalities.
 
 * You can execute each test script individually by selecting the desired script within the collection and clicking the "Send" button.
+![Running the individual test - in this case, it's signup positive case](photo_2024-06-26_20-30-17.jpg)
 * Alternatively, Postman offers Runner features (desktop app) or Runner collections (web app) to run multiple tests in sequence. However, for cases requiring manual input or OTP verification, individual execution is recommended.
 
 **Important Note: OTP**
